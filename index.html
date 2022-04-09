@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <title>Carousel</title>
     <style>
-        .main-container {
+        .carousel-main-container {
             display: flex;
             position: relative;
             width: 100%;
@@ -13,7 +13,7 @@
             max-height: 400px;
         }
 
-        .single-slide {
+        .carousel-main-container .single-slide {
             display: flex;
             position: absolute;
             width: 50%;
@@ -25,25 +25,25 @@
             overflow: hidden;
         }
 
-        [data-order="1"] {
+        .carousel-main-container [data-order="1"] {
             transform: translate(0%) scale(0.9);
         }
 
-        [data-order="2"] {
+        .carousel-main-container [data-order="2"] {
             transform: translate(50%) scale(1);
             box-shadow: 0 0 5px;
             z-index: 2;
         }
 
-        [data-order="3"] {
+        .carousel-main-container [data-order="3"] {
             transform: translate(100%) scale(0.9);
         }
 
-        [data-order]:not([data-order*='1']):not([data-order*='2']):not([data-order*='3']) {
+        .carousel-main-container [data-order]:not([data-order*='1']):not([data-order*='2']):not([data-order*='3']) {
             display: none;
         }
 
-        #next, #previous {
+        .carousel-main-container #next, .carousel-main-container #previous {
             display: flex;
             justify-content: center;
             align-items: center;
@@ -61,14 +61,14 @@
             cursor: pointer;
         }
 
-        #previous {
+        .carousel-main-container #previous {
             left: calc(25% - 40px);
             top: calc(50% - 20px);
         }
     </style>
 </head>
 <body>
-<div class="main-container" id="container">
+<div class="carousel-main-container" id="container">
     <button id="next">
         <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="Layer_1" x="0px" y="0px" viewBox="0 0 330.002 330.002" fill="currentColor" style="width: 100%;" xml:space="preserve">
             <path id="XMLID_226_" d="M233.252,155.997L120.752,6.001c-4.972-6.628-14.372-7.97-21-3c-6.628,4.971-7.971,14.373-3,21  l105.75,140.997L96.752,306.001c-4.971,6.627-3.627,16.03,3,21c2.698,2.024,5.856,3.001,8.988,3.001  c4.561,0,9.065-2.072,12.012-6.001l112.5-150.004C237.252,168.664,237.252,161.33,233.252,155.997z"/>
@@ -83,21 +83,39 @@
 
 <script>
     const imgUrls = [
-        './img/1.jpeg',
-        './img/2.jpeg',
-        './img/3.jpeg',
-        './img/4.jpeg',
-        './img/5.jpeg',
+        {
+            imgUrl: './img/1.jpeg',
+            href: '#'
+        },
+        {
+            imgUrl: './img/2.jpeg',
+            href: '#'
+        },
+        {
+            imgUrl: './img/3.jpeg',
+            href: '#'
+        },
+        {
+            imgUrl: './img/4.jpeg',
+            href: '#'
+        },
+        {
+            imgUrl: './img/5.jpeg',
+            href: '#'
+        }
     ];
     const imgs = [];
-    imgUrls.forEach(imgUrl => {
+    imgUrls.forEach(it => {
         const container = document.createElement('div');
         container.classList.add('single-slide');
         const img = document.createElement('img');
-        img.src = imgUrl;
+        img.src = it.imgUrl;
         img.setAttribute('width', '100%');
         img.setAttribute('height', '100%');
-        container.appendChild(img);
+        const a = document.createElement('a');
+        a.href = it.href;
+        a.appendChild(img);
+        container.appendChild(a);
         imgs.push(container);
     })
     imgs[0].setAttribute('data-order', 1);
