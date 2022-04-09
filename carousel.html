@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Carousel</title>
+    <style>
+        .main-container {
+            display: flex;
+            position: relative;
+            width: 100%;
+            min-height: 300px;
+        }
+
+        .single-slide {
+            display: flex;
+            position: absolute;
+            width: 50%;
+            height: 100%;
+            background-color: #000;
+            transition: 1000ms;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        [data-order="1"] {
+            transform: translate(0%) scale(0.9);
+        }
+
+        [data-order="2"] {
+            transform: translate(50%) scale(1);
+            box-shadow: 0 0 5px;
+            z-index: 2;
+        }
+
+        [data-order="3"] {
+            transform: translate(100%) scale(0.9);
+        }
+
+        [data-order]:not([data-order*='1']):not([data-order*='2']):not([data-order*='3']) {
+            display: none;
+        }
+
+        #next, #previous {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: absolute;
+            left: calc(75% - 40px);
+            top: calc(50% - 20px);
+            width: 40px;
+            height: 40px;
+            background-color: #276fdb;
+            border: none;
+            border-radius: 5px;
+            transform: translateX(50%);
+            color: #fff;
+            z-index: 3;
+            cursor: pointer;
+        }
+
+        #previous {
+            left: calc(25% - 40px);
+            top: calc(50% - 20px);
+        }
+    </style>
+</head>
+<body>
+<div class="main-container" id="container">
+    <button id="next">
+        <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="Layer_1" x="0px" y="0px" viewBox="0 0 330.002 330.002" fill="currentColor" xml:space="preserve">
+            <path id="XMLID_226_" d="M233.252,155.997L120.752,6.001c-4.972-6.628-14.372-7.97-21-3c-6.628,4.971-7.971,14.373-3,21  l105.75,140.997L96.752,306.001c-4.971,6.627-3.627,16.03,3,21c2.698,2.024,5.856,3.001,8.988,3.001  c4.561,0,9.065-2.072,12.012-6.001l112.5-150.004C237.252,168.664,237.252,161.33,233.252,155.997z"/>
+        </svg>
+    </button>
+    <button id="previous">
+        <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="Layer_1" x="0px" y="0px" viewBox="0 0 330.002 330.002" fill="currentColor" style="transform: rotate(180deg)" xml:space="preserve">
+            <path id="XMLID_226_" d="M233.252,155.997L120.752,6.001c-4.972-6.628-14.372-7.97-21-3c-6.628,4.971-7.971,14.373-3,21  l105.75,140.997L96.752,306.001c-4.971,6.627-3.627,16.03,3,21c2.698,2.024,5.856,3.001,8.988,3.001  c4.561,0,9.065-2.072,12.012-6.001l112.5-150.004C237.252,168.664,237.252,161.33,233.252,155.997z"/>
+        </svg>
+    </button>
+</div>
+
+<script>
+    const imgUrls = [
+        './img/1.jpeg',
+        './img/2.jpeg',
+        './img/3.jpeg',
+        './img/4.jpeg',
+        './img/5.jpeg',
+    ];
+    const imgs = [];
+    imgUrls.forEach(imgUrl => {
+        const container = document.createElement('div');
+        container.classList.add('single-slide');
+        const img = document.createElement('img');
+        img.src = imgUrl;
+        img.setAttribute('width', '100%');
+        img.setAttribute('height', '100%');
+        container.appendChild(img);
+        imgs.push(container);
+    })
+    imgs[0].setAttribute('data-order', 1);
+    imgs[1].setAttribute('data-order', 2);
+    imgs[2].setAttribute('data-order', 3);
+
+    for (let i = 3; i < imgs.length; i++) {
+        imgs[i].setAttribute('data-order', 0);
+    }
+
+    const container = document.getElementById('container');
+    container.append(...imgs);
+
+    let i = 1;
+
+    const swipe = () => {
+        const length = imgs.length;
+        imgs[(i - 1) % length].setAttribute('data-order', 0);
+
+        imgs[i % length].setAttribute('data-order', 1);
+
+        imgs[(i + 1) % length].setAttribute('data-order', 2);
+
+        imgs[(i + 2) % length].setAttribute('data-order', 3);
+
+        if (imgs[(i + 3) % length] !== imgs[(i - 1) % length]) {
+            imgs[(i + 3) % length].setAttribute('data-order', 0);
+        }
+
+        i++;
+    }
+
+    let interval = setInterval(swipe, 3000);
+
+    const nextBtn = document.getElementById('next');
+    const previousBtn = document.getElementById('previous');
+
+    nextBtn.addEventListener('click', () => {
+        clearInterval(interval);
+        swipe();
+        interval = setInterval(swipe, 3000);
+    });
+
+    previousBtn.addEventListener('click', () => {
+        clearInterval(interval);
+        i = i >= 2 ? i - 2 : imgs.length - 1;
+        swipe();
+        interval = setInterval(swipe, 3000);
+    });
+</script>
+</body>
+</html>
