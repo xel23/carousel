@@ -85,23 +85,33 @@
     const imgUrls = [
         {
             imgUrl: './img/1.jpeg',
-            href: '#'
+            href: '#',
+            title: '',
+            alt: ''
         },
         {
             imgUrl: './img/2.jpeg',
-            href: '#'
+            href: '#',
+            title: '',
+            alt: ''
         },
         {
             imgUrl: './img/3.jpeg',
-            href: '#'
+            href: '#',
+            title: '',
+            alt: ''
         },
         {
             imgUrl: './img/4.jpeg',
-            href: '#'
+            href: '#',
+            title: '',
+            alt: ''
         },
         {
             imgUrl: './img/5.jpeg',
-            href: '#'
+            href: '#',
+            title: '',
+            alt: ''
         }
     ];
     const imgs = [];
@@ -110,6 +120,8 @@
         container.classList.add('single-slide');
         const img = document.createElement('img');
         img.src = it.imgUrl;
+        img.title = it.title;
+        img.alt = it.alt;
         img.setAttribute('width', '100%');
         img.setAttribute('height', '100%');
         const a = document.createElement('a');
